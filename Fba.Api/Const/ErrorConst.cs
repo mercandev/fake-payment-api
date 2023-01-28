@@ -9,6 +9,7 @@ namespace Fba.Api.Const
         public const string LASTUSEYEAR_ERROR = "LastUseYear only equal this year!";
         public const string LASTUSEMOUNT_ERROR = "LastUseMount must be between 1 and 12";
         public const string CARDPAYMENTTYPE_ERROR = "Unexpected payment method type!";
+        public const string PRICEDEFAULT_ERROR = "Price cannot be a default!";
 
     }
 }

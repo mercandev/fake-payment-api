@@ -32,7 +32,7 @@ namespace Fba.Api.Domain
         public Card(string customerName , string cardNumber , int lastUseMount , int lastUseYear , int cvv)
         {
             Contract.IsRequired((cardNumber.Length < 16 || cardNumber.Length > 16), ErrorConst.CARDNUMBER_ERROR);
-            Contract.IsRequired((cvv < 0 || cvv > 3), ErrorConst.CARDCVV_ERROR);
+            Contract.IsRequired((cvv < 0 || cvv > 999), ErrorConst.CARDCVV_ERROR);
 
             CustomerName = customerName;
             CardNumber = cardNumber;
@@ -40,35 +40,38 @@ namespace Fba.Api.Domain
             LastUseYear = lastUseYear;
         }
 
-        public void CheckCardLastUseYears(int lastUseYear)
+        public void CheckCardLastUseYears()
         {
-            var currentYear = DateTime.Now.Year.ToString().Substring(3,4);
+            var currentYear = DateTime.Now.Year.ToString().Substring(2,2);
 
-            if (!lastUseYear.ToString().Equals(currentYear)) throw new HbaBusinessException(ErrorConst.LASTUSEYEAR_ERROR);
+            if (!LastUseYear.ToString().Equals(currentYear)) throw new HbaBusinessException(ErrorConst.LASTUSEYEAR_ERROR);
         }
 
-        public void CheckCardLastUseDate(int lastUseDate)
+        public void CheckCardLastUseMount()
         {
-            if (!Enumerable.Range(1, 31).Contains(lastUseDate)) throw new HbaBusinessException(ErrorConst.LASTUSEMOUNT_ERROR);
+            if (!Enumerable.Range(1, 31).Contains(LastUseMount)) throw new HbaBusinessException(ErrorConst.LASTUSEMOUNT_ERROR);
         }
 
         public void DelegateCardPaymentType()
         {
-            var firstFourDigit = CardNumber.Substring(0, 3);
+            var firstFourDigit = CardNumber.Substring(0, 4);
 
             if (CardPaymentTypeConst.MASTERCARD.Contains(firstFourDigit))
             {
                 CardPaymentType = CardPaymentType.MasterCard;
+                return;
             }
 
             if (CardPaymentTypeConst.VISA.Contains(firstFourDigit))
             {
                 CardPaymentType = CardPaymentType.Visa;
+                return;
             }
 
             if (CardPaymentTypeConst.TROY.Contains(firstFourDigit))
             {
                 CardPaymentType = CardPaymentType.Troy;
+                return;
             }
 
             throw new HbaBusinessException(ErrorConst.CARDPAYMENTTYPE_ERROR);
