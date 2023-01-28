@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'https' " />
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'http' " />
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.2" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+    <PackageReference Include="Marten" Version="6.0.0-alpha.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Service\" />
+    <None Remove="Domain\" />
+    <None Remove="Const\" />
+    <None Remove="Helper\" />
+    <None Remove="Marten" />
+    <None Remove="SharedObject\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Service\" />
+    <Folder Include="Domain\" />
+    <Folder Include="Const\" />
+    <Folder Include="Helper\" />
+    <Folder Include="SharedObject\" />
+  </ItemGroup>
+</Project>
