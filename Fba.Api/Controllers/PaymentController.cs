@@ -23,7 +23,7 @@ namespace Fba.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ReturnState<object>> GetEmptyCardList(PaymentViewModel model)
+        public async Task<ReturnState<object>> PostCreateNoneSecurePayment(PaymentViewModel model)
             => await _paymentService.StartNone3DsPayment(model);
     }
 }
