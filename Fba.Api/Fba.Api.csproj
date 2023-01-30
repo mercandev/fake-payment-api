@@ -21,6 +21,7 @@
     <None Remove="Helper\" />
     <None Remove="Marten" />
     <None Remove="SharedObject\" />
+    <None Remove="Content\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Service\" />
@@ -28,5 +29,6 @@
     <Folder Include="Const\" />
     <Folder Include="Helper\" />
     <Folder Include="SharedObject\" />
+    <Folder Include="Content\" />
   </ItemGroup>
 </Project>

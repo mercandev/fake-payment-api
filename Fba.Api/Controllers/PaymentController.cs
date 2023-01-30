@@ -25,6 +25,14 @@ namespace Fba.Api.Controllers
         [HttpPost]
         public async Task<ReturnState<object>> PostCreateNoneSecurePayment(PaymentViewModel model)
             => await _paymentService.StartNone3DsPayment(model);
+
+        [HttpPost]
+        public async Task<ReturnState<object>> PostCreate3dSecurePayment(PaymentViewModel model)
+            => await _paymentService.Start3DsPayment(model);
+
+        [HttpGet]
+        public async Task<ReturnState<object>> GetComplate3dSecurePayment(string code , string paymentUniqueId)
+            => await _paymentService.Complate3DsPayment(code, paymentUniqueId);
     }
 }
 

@@ -7,6 +7,7 @@ namespace Fba.Api.Service
     {
         Task<ReturnState<object>> StartNone3DsPayment(PaymentViewModel model);
         Task<ReturnState<object>> Start3DsPayment(PaymentViewModel model);
+        Task<ReturnState<object>> Complate3DsPayment(string code, string paymentUniqueId);
     }
 }
 
