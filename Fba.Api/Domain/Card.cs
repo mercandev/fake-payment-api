@@ -31,7 +31,7 @@ namespace Fba.Api.Domain
 
         public Card(string customerName , string cardNumber , int lastUseMount , int lastUseYear , int cvv)
         {
-            Contract.IsRequired((cardNumber.Length < 16 || cardNumber.Length > 16), ErrorConst.CARDNUMBER_ERROR);
+            Contract.IsRequired((cardNumber.Length < 18 || cardNumber.Length > 18), ErrorConst.CARDNUMBER_ERROR);
             Contract.IsRequired((cvv < 0 || cvv > 999), ErrorConst.CARDCVV_ERROR);
 
             CustomerName = customerName;

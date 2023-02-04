@@ -26,7 +26,7 @@ namespace Fba.Api.Service
 
             var paymentResult = await RestRequestHelper<ReturnState<PaymentResponseViewModel>, PaymentViewModel>.PostService(UrlConst.CREATEPAYMENT_URL, model);
 
-            if (paymentResult == null) throw new HbaBusinessException("Hares Bank connection fail"); //real life, this service goes to real payment service :) 
+            if (paymentResult == null) throw new HbaBusinessException("Hares Bank connection fail"); 
 
             if (!string.IsNullOrWhiteSpace(paymentResult.ErrorMessage)) throw new HbaBusinessException(paymentResult.ErrorMessage);
 
@@ -38,6 +38,8 @@ namespace Fba.Api.Service
             CheckCardInformation(model);
 
             //Hares Bank request. Card validation!
+
+            model.PaymentSource =  model.PaymentSource.Replace(model.PaymentSource, $"{model.PaymentSource} - (3Ds Payment)");
 
             SecurePaymentModel paymentModel = new()
             {
@@ -72,11 +74,7 @@ namespace Fba.Api.Service
 
             card.CheckCardLastUseMount();
 
-            card.CheckCardLastUseYears();
-
-            card.DelegateCardPaymentType();
-
-            card.RandomDelegateCardType();
+            //card.CheckCardLastUseYears();
         }
 
         public async Task<ReturnState<object>> Complate3DsPayment(string code, string paymentUniqueId)
@@ -89,15 +87,15 @@ namespace Fba.Api.Service
 
             if (result.SecureCode != code) throw new HbaBusinessException("code fail!");
 
-            //hares bank connection and payment complate!
+            var paymentResult = await RestRequestHelper<ReturnState<PaymentResponseViewModel>, PaymentViewModel>.PostService(UrlConst.CREATEPAYMENT_URL, result.PaymentInformations);
 
-            //update complate payment status!
+            if (!string.IsNullOrWhiteSpace(paymentResult.ErrorMessage)) throw new HbaBusinessException(paymentResult.ErrorMessage);
 
             result.IsActive = false;
             _documentSession.Update(result);
             await _documentSession.SaveChangesAsync();
 
-            return new ReturnState<object>(true);
+            return new ReturnState<object>(new PaymentResponseViewModel { PaymentRefNo = paymentResult.Data.PaymentRefNo, PaymentResult = paymentResult.Data.PaymentResult });
 
         }
     }
